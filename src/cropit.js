@@ -199,12 +199,11 @@ onPreImageLoaded() {
     }
 
     var exif = EXIF.readFromBinaryFile(_base64ToArrayBuffer(this.preImage.src));
-    debugger;
     var canvas = document.createElement("canvas");
     canvas.width = this.preImage.width;
     canvas.height = this.preImage.height;
-  console.log(canvas.width);
-  console.log(canvas.height);
+    var originalWidth;
+    var originalHeight;
     var ctx = canvas.getContext("2d");
     var x = 0;
     var y = 0;
@@ -220,6 +219,8 @@ onPreImageLoaded() {
           break;
         case 3:
           // 180° rotate left
+          originalWidth = canvas.height;
+          originalHeight = canvas.width;
           ctx.translate(canvas.width, canvas.height);
           ctx.rotate(Math.PI);
           break;
@@ -230,22 +231,30 @@ onPreImageLoaded() {
           break;
         case 5:
           // vertical flip + 90 rotate right
+          originalWidth = canvas.height;
+          originalHeight = canvas.width;
           ctx.rotate(0.5 * Math.PI);
           ctx.scale(1, -1);
           break;
         case 6:
           // 90° rotate right
+          originalWidth = canvas.height;
+          originalHeight = canvas.width;
           ctx.rotate(0.5 * Math.PI);
           ctx.translate(0, -canvas.height);
           break;
         case 7:
           // horizontal flip + 90 rotate right
+          originalWidth = canvas.height;
+          originalHeight = canvas.width;
           ctx.rotate(0.5 * Math.PI);
           ctx.translate(canvas.width, -canvas.height);
           ctx.scale(-1, 1);
           break;
         case 8:
           // 90° rotate left
+          originalWidth = canvas.height;
+          originalHeight = canvas.width;
           ctx.rotate(-0.5 * Math.PI);
           ctx.translate(-canvas.width, 0);
           break;
