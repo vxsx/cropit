@@ -188,10 +188,6 @@ onPreImageLoaded() {
       return;
     }
 
-    if (this.options.allowCrossOrigin) {
-      this.image.crossOrigin = this.preImage.src.indexOf('data:') === 0 ? null : 'Anonymous';
-    }
-
     function _base64ToArrayBuffer(base64) {
       var binary_string = window.atob(base64.split(",")[1]);
       var len = binary_string.length;
@@ -203,10 +199,12 @@ onPreImageLoaded() {
     }
 
     var exif = EXIF.readFromBinaryFile(_base64ToArrayBuffer(this.preImage.src));
-
+    debugger;
     var canvas = document.createElement("canvas");
     canvas.width = this.preImage.width;
     canvas.height = this.preImage.height;
+  console.log(canvas.width);
+  console.log(canvas.height);
     var ctx = canvas.getContext("2d");
     var x = 0;
     var y = 0;
@@ -256,6 +254,10 @@ onPreImageLoaded() {
       ctx.drawImage(this.preImage, x, y);
       ctx.restore();
       var finalImage = canvas.toDataURL("image/*", 1.0);
+
+      if (this.options.allowCrossOrigin) {
+        this.image.crossOrigin = this.preImage.src.indexOf('data:') === 0 ? null : 'Anonymous';
+      }
 
       this.image.src = this.imageSrc = finalImage;
     } else {
