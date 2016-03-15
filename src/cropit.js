@@ -202,8 +202,8 @@ onPreImageLoaded() {
     var canvas = document.createElement("canvas");
     canvas.width = this.preImage.width;
     canvas.height = this.preImage.height;
-    var originalWidth;
-    var originalHeight;
+    var originalWidth = canvas.width;
+    var originalHeight = canvas.height;
     var ctx = canvas.getContext("2d");
     var x = 0;
     var y = 0;
