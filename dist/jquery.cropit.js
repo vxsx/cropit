@@ -403,7 +403,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 
 	      var exif = _exifJs2['default'].readFromBinaryFile(_base64ToArrayBuffer(this.preImage.src));
-
+	      debugger;
 	      var canvas = document.createElement('canvas');
 	      canvas.width = this.preImage.width;
 	      canvas.height = this.preImage.height;
