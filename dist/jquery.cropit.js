@@ -443,7 +443,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            canvas.height = originalImageWidth;
 	            canvas.width = originalImageHeight;
 	            ctx.rotate(0.5 * Math.PI);
-	            ctx.translate(0, -canvas.height);
+	            ctx.translate(0, -canvas.width);
 	            break;
 	          case 7:
 	            // horizontal flip + 90 rotate right
