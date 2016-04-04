@@ -462,9 +462,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	            break;
 	        }
 
-	        ctx.drawImage(this.preImage, x, y);
+	        var finalRatio = canvas.width / canvas.height;
+
+	        var finalWidth;
+	        var finalHeight;
+
+	        // image is horizontal, so we have to adapt to the height
+	        if (finalRatio >= 1) {
+	          finalHeight = this.previewSize.h * 2;
+	          finalWidth = finalHeight * finalRatio;
+	        } else {
+	          finalWidth = this.previewSize.w * 2;
+	          finalHeight = finalWidth / finalRatio;
+	        }
+
+	        canvas.width = finalWidth;
+	        canvas.height = finalHeight;
+
+	        ctx.drawImage(this.preImage, x, y, originalImageWidth, originalImageHeight, x, y, finalWidth, finalHeight);
 	        ctx.restore();
-	        var finalImage = canvas.toDataURL('image/*', 1);
+
+	        var finalImage = canvas.toDataURL('image/png', 1);
 
 	        if (this.options.allowCrossOrigin) {
 	          this.image.crossOrigin = this.preImage.src.indexOf('data:') === 0 ? null : 'Anonymous';
