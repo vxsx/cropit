@@ -204,13 +204,30 @@ class Cropit {
     canvas.height = this.preImage.height;
     var originalImageWidth = canvas.width;
     var originalImageHeight = canvas.height;
-    var ctx = canvas.getContext("2d");
+
+    var finalRatio = canvas.width / canvas.height;
+
+    var finalWidth;
+    var finalHeight;
+
+    // image is horizontal, so we have to adapt to the height
+    if (finalRatio >= 1) {
+      finalHeight = this.previewSize.h * 2;
+      finalWidth = finalHeight * finalRatio;
+    } else {
+      finalWidth = this.previewSize.w * 2;
+      finalHeight = finalWidth / finalRatio;
+    }
+
+    canvas.width = finalWidth;
+    canvas.height = finalHeight;
+
+    var ctx = canvas.getContext('2d');
     var x = 0;
     var y = 0;
     ctx.save();
 
-    if (exif.Oriendation != "undefined") {
-
+    if (typeof exif.Orientation !== 'undefined') {
       switch (exif.Orientation) {
         case 2:
           // horizontal flip
@@ -229,51 +246,34 @@ class Cropit {
           break;
         case 5:
           // vertical flip + 90 rotate right
-          canvas.height = originalImageWidth
-          canvas.width = originalImageHeight;
+          canvas.height = finalWidth;
+          canvas.width = finalHeight;
           ctx.rotate(0.5 * Math.PI);
           ctx.scale(1, -1);
           break;
         case 6:
           // 90° rotate right
-          canvas.height = originalImageWidth
-          canvas.width = originalImageHeight;
+          canvas.height = finalWidth;
+          canvas.width = finalHeight;
           ctx.rotate(0.5 * Math.PI);
           ctx.translate(0, -canvas.width);
           break;
         case 7:
           // horizontal flip + 90 rotate right
-          canvas.height = originalImageWidth
-          canvas.width = originalImageHeight;
+          canvas.height = finalWidth;
+          canvas.width = finalHeight;
           ctx.rotate(0.5 * Math.PI);
           ctx.translate(canvas.width, -canvas.height);
           ctx.scale(-1, 1);
           break;
         case 8:
           // 90° rotate left
-          canvas.height = originalImageWidth
-          canvas.width = originalImageHeight;
+          canvas.height = finalWidth;
+          canvas.width = finalHeight;
           ctx.rotate(-0.5 * Math.PI);
           ctx.translate(-canvas.width, 0);
           break;
       }
-
-      var finalRatio = canvas.width / canvas.height;
-
-      var finalWidth;
-      var finalHeight;
-
-      // image is horizontal, so we have to adapt to the height
-      if (finalRatio >= 1) {
-        finalHeight = this.previewSize.h * 2;
-        finalWidth = finalHeight * finalRatio;
-      } else {
-        finalWidth = this.previewSize.w * 2;
-        finalHeight = finalWidth / finalRatio;
-      }
-
-      canvas.width = finalWidth;
-      canvas.height = finalHeight;
 
       ctx.drawImage(this.preImage, x, y, originalImageWidth, originalImageHeight, x, y, finalWidth, finalHeight);
       ctx.restore();
